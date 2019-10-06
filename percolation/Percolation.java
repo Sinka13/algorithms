@@ -4,29 +4,24 @@
  *  Description:
  **************************************************************************** */
 
-import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
   private int n;
   private WeightedQuickUnionUF union;
-  private int[] grid;
   private int[] openSites;
   private int topRoot;
   private int bottomRoot;
+  private int openSitesCounter;
 
   // creates n-by-n grid, with all sites initially blocked
   public Percolation(int n) {
     this.n = n;
-    int size = n * n - 1;
-    this.grid = new int[size];
+    int size = n * n;
     this.topRoot = 0;
-    this.bottomRoot = n + 1;
-    for (int i = 1; i <= size; i++) {
-      grid[i - 1] = i;
-    }
-    ;
-    this.union = new WeightedQuickUnionUF(size + 1);
+    this.bottomRoot = size + 1;
+    this.openSitesCounter = 0;
+    this.union = new WeightedQuickUnionUF(size + 2);
     this.openSites = new int[size];
   }
 
@@ -34,47 +29,32 @@ public class Percolation {
 
   // opens the site (row, col) if it is not open already
   public void open(int row, int col) {
-    int element = (row - 1) * n + col;
-    if (element <= 0 || element > n) {
-      throw new IndexOutOfBoundsException("row index i out of bounds");
-    }
-    ;
+    int element = element(row, col);
+    validateRowOrColumn(row, col);
     if (isOpen(row, col)) {
       return;
     }
     ;
 
-    int[][] adjacent_sites = new int[4][2];
-    if (col != 1) {
-      int[] rowCol = { (row - 1), col - 1 };
-      adjacent_sites[0] = rowCol;
-    }
-    ;
-    if (col != n) {
-      int[] rowCol = { row - 1, col + 1 };
-      adjacent_sites[1] = rowCol;
-    }
-    ;
-    if (row != n) {
-      int[] rowCol = { row, col };
-      adjacent_sites[2] = rowCol;
-    }
-    ;
-    if (row != 1) {
-      int[] rowCol = { (row - 2), col };
-      adjacent_sites[3] = rowCol;
-    }
-    ;
+    int[][] adjacentSites = new int[4][2];
+    adjacentSites[0] = new int[] { (row - 1), col }; // top
+    adjacentSites[1] = new int[] { row + 1, col }; // bottom
+    adjacentSites[2] = new int[] { row, col - 1 }; // left
+    adjacentSites[3] = new int[] { row, col + 1 }; // right
+
     if (row == 1) {
-      union.union(element, topRoot);
+      union.union(topRoot, element);
     }
     else if (row == n) {
-      union.union(element, bottomRoot);
+      union.union(bottomRoot, element);
     }
     ;
-    for (int[] site : adjacent_sites) {
+    openSites[(element - 1)] = 1;
+    ++openSitesCounter;
+    for (int[] site : adjacentSites) {
+      if (site[0] <= 0 || site[1] <= 0 || site[0] > n || site[1] > n) continue;
       if (isOpen(site[0], site[1])) {
-        int siteElement = site[0] * n + site[1];
+        int siteElement = element(site[0], site[1]);
         union.union(element, siteElement);
       }
     }
@@ -84,55 +64,51 @@ public class Percolation {
 
   // is the site (row, col) open?
   public boolean isOpen(int row, int col) {
-    int element = (row - 1) * n + col;
-    if (element <= 0 || element > n) {
-      throw new IndexOutOfBoundsException("row index i out of bounds");
-    }
-    ;
-    boolean result = false;
-
-    for (int i : openSites) {
-      if (i == element) {
-        result = true;
-        break;
-      }
-    }
-
-    return result;
+    validateRowOrColumn(row, col);
+    return openSites[(element(row, col) - 1)] != 0;
   }
 
   ;
 
   // is the site (row, col) full?
   public boolean isFull(int row, int col) {
-    int element = (row - 1) * n + col;
-    if (element <= 0 || element > n) {
-      throw new IndexOutOfBoundsException("row index i out of bounds");
-    }
-    ;
-    return union.connected(element, topRoot);
+    return union.connected(element(row, col), topRoot);
   }
 
 
   // returns the number of open sites
   public int numberOfOpenSites() {
-    return openSites.length;
+    return openSitesCounter;
   }
 
   ;
 
   // does the system percolate?
   public boolean percolates() {
-    StdRandom.discrete(grid);
-    return true;
+    // int row = StdRandom.uniform(1, n);
+    // int col = StdRandom.uniform(1, n);
+    return union.connected(topRoot, bottomRoot);
+  }
+
+  ;
+
+  private int element(int row, int col) {
+    return (row - 1) * n + col;
+  }
+
+  ;
+
+  private void validateRowOrColumn(int row, int col) {
+    if (row <= 0 || row > n || col <= 0 || col > n) {
+      throw new IndexOutOfBoundsException("row index i out of bounds");
+    }
+    ;
   }
 
   ;
 
   // test client (optional)
   public static void main(String[] args) {
-    Percolation a = new Percolation(5);
-    a.isOpen(1, 1);
   }
 
   ;
