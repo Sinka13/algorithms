@@ -9,6 +9,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
   private int n;
   private WeightedQuickUnionUF union;
+  private WeightedQuickUnionUF topUnion;
   private int[] openSites;
   private int topRoot;
   private int bottomRoot;
@@ -22,10 +23,9 @@ public class Percolation {
     this.bottomRoot = size + 1;
     this.openSitesCounter = 0;
     this.union = new WeightedQuickUnionUF(size + 2);
+    this.topUnion = new WeightedQuickUnionUF(size + 1);
     this.openSites = new int[size];
   }
-
-  ;
 
   // opens the site (row, col) if it is not open already
   public void open(int row, int col) {
@@ -34,7 +34,6 @@ public class Percolation {
     if (isOpen(row, col)) {
       return;
     }
-    ;
 
     int[][] adjacentSites = new int[4][2];
     adjacentSites[0] = new int[] { (row - 1), col }; // top
@@ -44,11 +43,11 @@ public class Percolation {
 
     if (row == 1) {
       union.union(topRoot, element);
+      topUnion.union(topRoot, element);
     }
     else if (row == n) {
       union.union(bottomRoot, element);
     }
-    ;
     openSites[(element - 1)] = 1;
     ++openSitesCounter;
     for (int[] site : adjacentSites) {
@@ -56,11 +55,10 @@ public class Percolation {
       if (isOpen(site[0], site[1])) {
         int siteElement = element(site[0], site[1]);
         union.union(element, siteElement);
+        topUnion.union(element, siteElement);
       }
     }
   }
-
-  ;
 
   // is the site (row, col) open?
   public boolean isOpen(int row, int col) {
@@ -68,11 +66,9 @@ public class Percolation {
     return openSites[(element(row, col) - 1)] != 0;
   }
 
-  ;
-
   // is the site (row, col) full?
   public boolean isFull(int row, int col) {
-    return union.connected(element(row, col), topRoot);
+    return topUnion.connected(element(row, col), topRoot);
   }
 
 
@@ -81,35 +77,22 @@ public class Percolation {
     return openSitesCounter;
   }
 
-  ;
-
   // does the system percolate?
   public boolean percolates() {
-    // int row = StdRandom.uniform(1, n);
-    // int col = StdRandom.uniform(1, n);
     return union.connected(topRoot, bottomRoot);
   }
-
-  ;
 
   private int element(int row, int col) {
     return (row - 1) * n + col;
   }
 
-  ;
-
   private void validateRowOrColumn(int row, int col) {
     if (row <= 0 || row > n || col <= 0 || col > n) {
-      throw new IndexOutOfBoundsException("row index i out of bounds");
+      throw new IndexOutOfBoundsException("Index out of bounds");
     }
-    ;
   }
-
-  ;
 
   // test client (optional)
   public static void main(String[] args) {
   }
-
-  ;
 }
