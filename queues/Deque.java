@@ -36,7 +36,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the front
     public void addFirst(Item item) {
-        ValidateItem(item);
+        validateItem(item);
         if (isEmpty()) {
             first = new Node();
             first.item = item;
@@ -54,7 +54,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the back
     public void addLast(Item item) {
-        ValidateItem(item);
+        validateItem(item);
         if (isEmpty()) {
             last = new Node();
             last.item = item;
@@ -72,10 +72,10 @@ public class Deque<Item> implements Iterable<Item> {
 
     // remove and return the item from the front
     public Item removeFirst() {
-        RaiseErrorIfNoItems();
+        raiseErrorIfNoItems();
         Item item = first.item;
         first = first.next;
-        first.previous = null;
+        if (first != null) first.previous = null;
         size--;
         return item;
     }
@@ -83,7 +83,7 @@ public class Deque<Item> implements Iterable<Item> {
     // remove and return the item from the back
     // pop remove last item and relink last to be the one before last
     public Item removeLast() {
-        RaiseErrorIfNoItems();
+        raiseErrorIfNoItems();
         Item item = last.item;
         if (last.previous != null) {
             last = last.previous;
@@ -91,18 +91,19 @@ public class Deque<Item> implements Iterable<Item> {
         }
         else {
             last = null;
+            first = null;
         }
         size--;
         return item;
     }
 
-    private void ValidateItem(Item item) {
+    private void validateItem(Item item) {
         if (item == null) {
             throw new IllegalArgumentException("Item can't be empty");
         }
     }
 
-    private void RaiseErrorIfNoItems() {
+    private void raiseErrorIfNoItems() {
         if (size() == 0) {
             throw new java.util.NoSuchElementException("Deque is empty");
         }
@@ -136,27 +137,12 @@ public class Deque<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
-        Deque<String> d = new Deque<String>();
-        Iterator<String> i = d.iterator();
-        d.addLast("last");
-        d.addFirst("first");
-        d.addFirst("first2");
-        d.addLast("last2");
-        for (String s : d) {
-            StdOut.println(s);
-        }
-        StdOut.println("size = " + d.size());
-        StdOut.println("last => " + d.removeLast());
-        StdOut.println("remove first => " + d.removeFirst());
-        StdOut.println("last => " + d.removeLast());
-        StdOut.println("last => " + d.removeLast());
-        StdOut.println("size = " + d.size());
-        d.addFirst("first");
-        StdOut.println("size = " + d.size());
-        for (String s : d) {
-            StdOut.println(s);
-        }
-        i.remove();
+        Deque<Integer> deque = new Deque<Integer>();
+        deque.addFirst(1);
+        StdOut.println(deque.removeLast());
+        StdOut.println(deque.size());
+        deque.addFirst(3);
+        deque.removeLast();
     }
 
 

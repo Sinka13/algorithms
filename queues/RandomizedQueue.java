@@ -82,12 +82,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private class RandomIterator implements Iterator<Item> {
-        private int[] order = StdRandom.permutation(capasity);
         private int currentIndex = 0;
+        private final int[] order = order();
         private Item current = q[order[currentIndex]];
 
+        private int[] order() {
+            if (capasity > 0) {
+                return StdRandom.permutation(capasity);
+            }
+            else {
+                return new int[] { 0 };
+            }
+        }
+
         public boolean hasNext() {
-            return currentIndex < order.length;
+            return (currentIndex < order.length) && capasity > 0;
         }
 
         public Item next() {
@@ -108,44 +117,23 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // unit testing (required)
     public static void main(String[] args) {
         RandomizedQueue<String> r = new RandomizedQueue<String>();
-        StdOut.println("empty size " + r.size());
+        Iterator<String> i = r.iterator();
+
         r.enqueue("first");
-        r.dequeue();
-        r.enqueue("second");
-        r.enqueue("third");
-        r.enqueue("forth");
-        r.enqueue("fifth");
-        r.enqueue("sixth");
-        r.enqueue("seventh");
-        r.enqueue("eighth");
+        r.enqueue("first");
+        r.enqueue("first");
+        r.enqueue("first");
+        r.enqueue("first");
         r.sample();
-        StdOut.println("size before " + r.size());
         r.dequeue();
         r.dequeue();
-        StdOut.println("size after " + r.size());
-        StdOut.println("first iterator");
+        r.dequeue();
+        r.dequeue();
+        r.dequeue();
         for (String s : r) {
             StdOut.println(s);
         }
-        StdOut.println("second iterator");
-        for (String s : r) {
-            StdOut.println(s);
-        }
-        r.dequeue();
-        r.dequeue();
-        r.dequeue();
-        r.dequeue();
-        r.dequeue();
-        r.enqueue("first");
-        r.enqueue("second");
-        StdOut.println("sample " + r.dequeue());
-        r.enqueue("third");
-        StdOut.println("sample " + r.dequeue());
-        r.enqueue("forth");
-        StdOut.println("sample " + r.dequeue());
-        r.enqueue("fifth");
-        StdOut.println("sample " + r.dequeue());
-        r.enqueue("sixth");
+
     }
 
 }

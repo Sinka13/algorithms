@@ -51,7 +51,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Permutation">
+  <component name="RunManager" selected="Application.RandomizedQueue">
     <configuration name="Deque" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Deque" />
       <module name="Algorithms, Part I" />
@@ -60,7 +60,7 @@
     <configuration name="Permutation" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Permutation" />
       <module name="Algorithms, Part I" />
-      <option name="PROGRAM_PARAMETERS" value="9 distinct.txt" />
+      <option name="PROGRAM_PARAMETERS" value="3 &lt; duplicates.txt" />
       <method v="2" />
     </configuration>
     <configuration name="RandomizedQueue" type="Application" factoryName="Application">
@@ -71,6 +71,11 @@
     <configuration default="true" type="Application" factoryName="Application">
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.Deque" />
+      <item itemvalue="Application.Permutation" />
+      <item itemvalue="Application.RandomizedQueue" />
+    </list>
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -82,11 +87,32 @@
     </todo-panel>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Deque.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/RandomizedQueue.java</url>
+          <line>102</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/RandomizedQueue.java</url>
+          <line>98</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="String[] arr = in.readAllStrings()" language="JAVA" />
-        <watch expression="int n = 9;" language="JAVA" />
-        <watch expression="StdRandom.permutation(9, 3)" language="JAVA" custom="edu.princeton.cs.algs4.StdRandom" />
+        <watch expression="deque" language="JAVA" />
+        <watch expression="first" language="JAVA" />
+        <watch expression="isEmpty()" language="JAVA" />
+        <watch expression="hasNext()" language="JAVA" />
+        <watch expression="StdIn" language="JAVA" custom="edu.princeton.cs.algs4.StdIn" />
       </configuration>
     </watches-manager>
   </component>
