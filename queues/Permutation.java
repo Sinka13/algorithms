@@ -11,13 +11,10 @@ public class Permutation {
     public static void main(String[] args) {
         int k = Integer.parseInt(args[0]);
         RandomizedQueue<String> r = new RandomizedQueue<String>();
-        String[] words = StdIn.readAllStrings();
-        int stringsAmount = words.length;
-
-        for (int i = 0; i < stringsAmount; i++) {
-            r.enqueue(words[i]);
+        while (!StdIn.isEmpty()) {
+            r.enqueue(StdIn.readString());
         }
-        if (k > stringsAmount) k = stringsAmount;
+        if (k > r.size()) k = r.size();
         for (int i = 0; i < k; i++) {
             StdOut.println(r.dequeue());
         }

@@ -18,18 +18,17 @@ public class BruteCollinearPoints {
     public BruteCollinearPoints(Point[] points) {
         checkPointsArray(points);
         int n = points.length;
-        Point[] sortedPoints = Arrays.copyOf(points, points.length);
-        Arrays.sort(sortedPoints);
+        Arrays.sort(points);
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
-                double slope1 = sortedPoints[i].slopeTo(points[j]);
+                double slope1 = points[i].slopeTo(points[j]);
                 for (int k = j + 1; k < n; k++) {
-                    double slope2 = sortedPoints[j].slopeTo(points[k]);
+                    double slope2 = points[j].slopeTo(points[k]);
                     for (int m = k + 1; m < n; m++) {
-                        double slope3 = sortedPoints[k].slopeTo(points[m]);
+                        double slope3 = points[k].slopeTo(points[m]);
                         if (Double.compare(slope1, slope2) == 0
                                 && Double.compare(slope2, slope3) == 0) {
-                            LineSegment ls = new LineSegment(sortedPoints[i], sortedPoints[m]);
+                            LineSegment ls = new LineSegment(points[i], points[m]);
                             sgm.add(ls);
                         }
                     }
@@ -50,8 +49,7 @@ public class BruteCollinearPoints {
     private void checkPointsArray(Point[] points) {
         if (points == null) {
             throw new IllegalArgumentException();
-        }
-        else {
+        } else {
             for (int i = 0; i < points.length; i++) {
                 if (points[i] == null) throw new IllegalArgumentException();
                 for (int j = i + 1; j < points.length; j++) {
@@ -60,42 +58,6 @@ public class BruteCollinearPoints {
             }
         }
     }
-
-    // private LineSegment createLineSegmentFromFourPoints(Point p1, Point p2, Point p3, Point p4) {
-    //     Point min, max, min1, min2, max1, max2;
-    //     if (p1.compareTo(p2) == -1) {
-    //         min1 = p1;
-    //         max1 = p2;
-    //     }
-    //     else {
-    //         min1 = p2;
-    //         max1 = p1;
-    //     }
-    //
-    //     if (p3.compareTo(p4) == -1) {
-    //         min2 = p3;
-    //         max2 = p4;
-    //     }
-    //     else {
-    //         min2 = p4;
-    //         max2 = p3;
-    //     }
-    //
-    //     if (min1.compareTo(min2) == -1) {
-    //         min = min1;
-    //     }
-    //     else {
-    //         min = min2;
-    //     }
-    //     if (max1.compareTo(max2) == -1) {
-    //         max = max2;
-    //     }
-    //     else {
-    //         max = max1;
-    //     }
-    //     LineSegment ls = new LineSegment(min, max);
-    //     return ls;
-    // }
 
     public static void main(String[] args) {
 
@@ -125,7 +87,5 @@ public class BruteCollinearPoints {
             segment.draw();
         }
         StdDraw.show();
-        // BruteCollinearPoints collinear = new BruteCollinearPoints(points);
-        // collinear.numberOfSegments();
     }
 }
